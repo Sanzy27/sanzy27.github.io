@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zenzy Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: #2b1b47;
+            background-image: url('zenzy.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 20, 0.5);
+            z-index: 0;
+        }
+        .kotak {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #7b2cbf;
+            border-radius: 16px;
+            padding: 20px;
+            background: rgba(45, 27, 71, 0.7);
+            box-shadow: 0 0 30px rgba(123, 44, 191, 0.4);
+        }
+        .video-atas {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            height: 180px;
+            object-fit: cover;
+            background: #000;
+        }
+        h2 {
+            color: #fff;
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .pengaturan {
+            margin-bottom: 15px;
+        }
+        label {
+            color: #d4c4f0;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 10px;
+            background: rgba(30, 15, 50, 0.6);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #7b2cbf;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        .hasil {
+            margin-top: 18px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            color: #7bf1a8;
+            font-size: 17px;
+            font-weight: bold;
+            word-break: break-all;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .salin-btn {
+            margin-top: 12px;
+            background: #22c55e;
+            width: auto;
+            padding: 10px 25px;
+            font-size: 15px;
+        }
+        .salin-btn.sukses {
+            background: #15803d;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <div class="kotak">
+        <!-- VIDEO DI ATAS -->
+        <video class="video-atas" autoplay muted loop playsinline>
+            <source src="atas-video.mp4" type="video/mp4">
+        </video>
+
+        <!-- PASSWORD GENERATOR DI BAWAH -->
+        <h2>🔐 Pembuat Password</h2>
+
+        <div class="pengaturan">
+            <label for="jumlah">Panjang Password:</label>
+            <input type="number" id="jumlah" value="16" min="4" max="64">
+        </div>
+
+        <button onclick="buatPassword()">✨ Buat Password</button>
+
+        <div class="hasil" id="hasilPassword">Klik tombol di atas</div>
+
+        <button class="salin-btn" id="tombolSalin" onclick="salinPassword()">Salin</button>
+    </div>
+
+<script>
+let passwordTerakhir = "";
+
+function buatPassword() {
+    const panjang = parseInt(document.getElementById("jumlah").value);
+    const karakter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+    
+    passwordTerakhir = "";
+    for (let i = 0; i < panjang; i++) {
+        const acak = Math.floor(Math.random() * karakter.length);
+        passwordTerakhir += karakter[acak];
+    }
+    
+    document.getElementById("hasilPassword").textContent = passwordTerakhir;
+}
+
+function salinPassword() {
+    if (!passwordTerakhir) {
+        alert("Buat password dulu bro!");
+        return;
+    }
+    
+    navigator.clipboard.writeText(passwordTerakhir).then(() => {
+        const btn = document.getElementById("tombolSalin");
+        btn.textContent = "✅ Tersalin!";
+        btn.classList.add("sukses");
+        
+        setTimeout(() => {
+            btn.textContent = "Salin";
+            btn.classList.remove("sukses");
+        }, 2000);
+    });
+}
+</script>
+</body>
+</html>
